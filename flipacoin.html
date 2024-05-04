@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coin Flip Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Flip the Coin</h1>
+        <button onclick="flipCoin()">Flip Coin</button>
+        <div class="coin-container">
+            <div id="coin">
+                <div class="side" id="headSide">Heads</div>
+                <div class="side" id="tailSide">Tails</div>
+            </div>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    .container {
+        text-align: center;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        margin-top: 20px;
+    }
+
+    .coin-container {
+        position: relative;
+        width: 300px; /* Adjust container width to accommodate the coin */
+        height: 300px; /* Adjust container height to accommodate the coin */
+        margin: 20px auto;
+        perspective: 1000px; /* Add perspective for 3D effect */
+    }
+
+    #coin {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d; /* Preserve 3D transformation */
+        /*display: none;  Initially hide the coin */
+    }
+
+    .sideXX {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #c0c0c0; /* Coin color */
+        text-align: center;
+        line-height: 100px;
+        font-size: 18px;
+        border-radius: 50%; /* Make the coin round */
+        backface-visibility: hidden; /* Hide back face during rotation */
+    }
+
+
+
+
+    .side {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: #c0c0c0; /* Coin color */
+        text-align: center;
+        font-size: 18px;
+        border-radius: 50%; /* Make the coin round */
+        backface-visibility: hidden; /* Hide back face during rotation */
+        display: flex; /* Set display to flex */
+        align-items: center; /* Center vertically */
+        justify-content: center; /* Center horizontally */
+        line-height: 300px; /* Adjust line height to match the height of the coin */
+    }
+
+
+    #tailSide {
+        transform: rotateY(180deg); /* Flipped to show the other side */
+    }
+
+    #result {
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    /* CSS animation for spinning the coin */
+    @keyframes spinCoin {
+        0% { transform: rotateY(0deg); }
+        100% { transform: rotateY(1800deg); }
+    }
+
+    /* Apply the spinning animation to the coin */
+    .spin-animation {
+        animation: spinCoin 2s linear forwards; /* Define spin animation */
+    }
+</style>
+</html>
+
+<script>
+    function flipCoin() {
+        const resultElement = document.getElementById('result');
+        const coinElement = document.getElementById('coin');
+        const headSide = document.getElementById('headSide');
+        const tailSide = document.getElementById('tailSide');
+
+        // Hide result initially
+        resultElement.textContent = '';
+
+        // Show the coin
+        coinElement.style.display = 'block';
+
+        // Remove the animation class to reset the animation
+        coinElement.classList.remove('spin-animation');
+
+        // Trigger reflow to restart the animation
+        void coinElement.offsetWidth;
+
+        // Add the animation class to start the animation
+        coinElement.classList.add('spin-animation');
+
+        // Delay for 2 seconds before showing the result
+        setTimeout(() => {
+            // Randomly select heads or tails after delay
+            const random = Math.random();
+            const result = random < 0.5 ? 'Heads' : 'Tails';
+
+            // Display the result
+            resultElement.textContent = result;
+
+            // Show the corresponding side of the coin
+            if (result === 'Heads') {
+                headSide.textContent = 'Heads';
+                tailSide.textContent = 'Tails';
+            } else {
+                headSide.textContent = 'Tails';
+                tailSide.textContent = 'Heads';
+            }
+        }, 2000); // 2-second delay
+    }
+</script>
